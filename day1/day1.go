@@ -29,19 +29,46 @@ func GetCalibrationValue(input io.Reader) int {
 	return result
 }
 
+var replacements = map[string]string{
+	"one":   "1",
+	"two":   "2",
+	"three": "3",
+	"four":  "4",
+	"five":  "5",
+	"six":   "6",
+	"seven": "7",
+	"eight": "8",
+	"nine":  "9",
+}
+
 func GetCalibrationValueWords(input io.Reader) int {
 	scanner := bufio.NewScanner(input)
 	scanner.Split(bufio.ScanLines)
 
 	// TODO: Refactor to streaming to avoid iterating over the lines twice
 
-	// note: test input has "sixteen" but that's a deception, input only has 1-9
-	replacer := strings.NewReplacer("one", "1", "two", "2", "three", "3", "four", "4", "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9")
 	result := ""
 	for scanner.Scan() {
 		next := strings.TrimSpace(scanner.Text())
-		// luck: this replaces an input like "oneight" correctly into "1ight"
-		result += replacer.Replace(next) + "\n"
+
+		// ugh
+		line := ""
+		for i, character := range next {
+			rest := next[i:]
+			replaced := false
+			for word, number := range replacements {
+				if strings.HasPrefix(rest, word) {
+					line += number
+					replaced = true
+					break
+				}
+			}
+			if !replaced {
+				line += string(character)
+			}
+		}
+
+		result += line + "\n"
 	}
 
 	return GetCalibrationValue(strings.NewReader(result))
