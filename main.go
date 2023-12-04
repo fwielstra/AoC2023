@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/fwielstra/AoC2023/day1"
+	"github.com/fwielstra/AoC2023/day2"
 )
 
 func main() {
@@ -23,6 +24,8 @@ func main() {
 	switch day {
 	case "day1":
 		runDay1(filename, args)
+	case "day2":
+		runDay2(filename, args)
 	default:
 		fmt.Printf("unrecognized day %s\n", day)
 	}
@@ -57,5 +60,13 @@ func runDay1(filename string, args []string) {
 	withFile(filename, func(r io.Reader) {
 		result := day1.GetCalibrationValueWords(r)
 		fmt.Printf("Result day 1 part 2 with input file %s: %d\n", filename, result)
+	})
+}
+
+func runDay2(filename string, args []string) {
+	withFile(filename, func(r io.Reader) {
+		games := day2.ParseGames(r)
+		result := games.SumOfPossibleIds(day2.CubeSet{Red: 12, Green: 13, Blue: 14})
+		fmt.Printf("Result day 2 part 1 with input file %s: %d\n", filename, result)
 	})
 }
