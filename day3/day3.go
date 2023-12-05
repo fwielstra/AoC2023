@@ -31,49 +31,31 @@ func (p PartNumbers) Sum() int {
 func FindPartNumbers(schematic string) PartNumbers {
 	currentNumber := ""
 	isPart := false
-	rows := strings.Split(schematic, "\n")
 	result := make(PartNumbers, 0)
-	for y := range rows {
-		col := rows[y]
-		if col == "" {
-			continue
-		}
+	grid := utils.NewGrid(schematic)
 
-		for x := range col {
-			value := rune(col[x])
-			if unicode.IsDigit(value) {
-				currentNumber += string(value)
+	grid.Iterate(func(y, x int, value rune) bool {
+		if unicode.IsDigit(value) {
+			currentNumber += string(value)
 
-				miny := max(0, y-1)
-				maxy := min(len(rows)-1, y+1)
-
-				// check neighbours; ensure we don't go out of bounds
-				for suby := miny; suby <= maxy; suby++ {
-					subrow := rows[suby]
-
-					// make sure we get the length of the current subrow in case it's empty or different length from the current main row.
-					minx := max(0, x-1)
-					maxx := min(len(subrow)-1, x+1)
-
-					for subx := minx; subx <= maxx; subx++ {
-						neighbour := rows[suby][subx]
-						if !unicode.IsDigit(rune(neighbour)) && neighbour != '.' {
-							isPart = true
-						}
-
-					}
+			grid.IterateNeighbours(y, x, func(neighbour rune) bool {
+				if !unicode.IsDigit(neighbour) && neighbour != '.' {
+					isPart = true
+					return true
 				}
-			} else {
-				if len(currentNumber) > 0 && isPart {
-					result = append(result, utils.ParseInt(currentNumber))
-				}
-
-				// reset, we're not on a number anymore.
-				currentNumber = ""
-				isPart = false
+				return false
+			})
+		} else {
+			if len(currentNumber) > 0 && isPart {
+				result = append(result, utils.ParseInt(currentNumber))
 			}
+
+			// reset, we're not on a number anymore.
+			currentNumber = ""
+			isPart = false
 		}
-	}
+		return false
+	})
 
 	return result
 }
