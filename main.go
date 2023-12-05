@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/fwielstra/AoC2023/day3"
 	"io"
 	"os"
 	"time"
@@ -26,6 +27,8 @@ func main() {
 		runDay1(filename, args)
 	case "day2":
 		runDay2(filename, args)
+	case "day3":
+		runDay3(filename, args)
 	default:
 		fmt.Printf("unrecognized day %s\n", day)
 	}
@@ -74,5 +77,18 @@ func runDay2(filename string, args []string) {
 		games := day2.ParseGames(r)
 		result := games.SumOfFewestCubesPowered()
 		fmt.Printf("Result day 2 part 2 with input file %s: %d\n", filename, result)
+	})
+}
+
+func runDay3(filename string, args []string) {
+	withFile(filename, func(r io.Reader) {
+		sum := day3.GetPartNumberSum(r)
+		fmt.Printf("Result day 3 part 1 with input file %s: %d\n", filename, sum)
+	})
+
+	withFile(filename, func(r io.Reader) {
+		//games := day2.ParseGames(r)
+		//result := games.SumOfFewestCubesPowered()
+		//fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, result)
 	})
 }
