@@ -48,6 +48,46 @@ func TestParseCubeSet(t *testing.T) {
 	}
 }
 
+func TestCubeSet_Power(t *testing.T) {
+	tests := []struct {
+		cubeSet CubeSet
+		want    int
+	}{
+		{
+			// this is the minimum amount of cubes for game 1
+			cubeSet: CubeSet{
+				Red:   4,
+				Green: 2,
+				Blue:  6,
+			},
+			want: 48,
+		},
+		{
+			cubeSet: CubeSet{
+				Red:   1,
+				Green: 4,
+				Blue:  3,
+			},
+			want: 12,
+		},
+		{
+			cubeSet: CubeSet{
+				Red:   20,
+				Green: 13,
+				Blue:  6,
+			},
+			want: 1560,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("CubeSet.Power() should return %d for a set %+v", tt.want, tt.cubeSet), func(t *testing.T) {
+			if got := tt.cubeSet.Power(); got != tt.want {
+				t.Errorf("Power() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
 func TestParseGame(t *testing.T) {
 	tests := []struct {
 		input    string
@@ -165,5 +205,52 @@ func TestSumOfPossible(t *testing.T) {
 
 	if result != 8 {
 		t.Errorf("Expected sum 8, got %+d", result)
+	}
+}
+
+func TestFewestCubes(t *testing.T) {
+
+	tests := []struct {
+		rounds   []CubeSet
+		expected CubeSet
+	}{
+		{
+			rounds:   []CubeSet{{Red: 1, Green: 1, Blue: 1}},
+			expected: CubeSet{Red: 1, Green: 1, Blue: 1},
+		},
+		// these are from the example
+		{
+			rounds:   []CubeSet{{Red: 4, Blue: 3}, {Red: 1, Green: 2, Blue: 6}, {Green: 2}},
+			expected: CubeSet{Red: 4, Green: 2, Blue: 6},
+		},
+		{
+			rounds:   []CubeSet{{Blue: 1, Green: 2}, {Red: 1, Green: 3, Blue: 4}, {Green: 1, Blue: 1}},
+			expected: CubeSet{Red: 1, Green: 3, Blue: 4},
+		},
+		{
+			rounds:   []CubeSet{{Red: 20, Blue: 6, Green: 8}, {Red: 4, Green: 13, Blue: 5}, {Red: 1, Green: 5}},
+			expected: CubeSet{Red: 20, Green: 13, Blue: 6},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("FewestCubes() should return %+v for input '%+v'", tt.expected, tt.rounds), func(t *testing.T) {
+			game := Game{id: 1, rounds: tt.rounds}
+			result := game.FewestPossible()
+
+			if tt.expected != result {
+				t.Errorf("FewestCubes() expected %+v for game %+v got %+v", tt.expected, game, result)
+			}
+		})
+	}
+}
+
+func TestSumOfFewestCubesPowered(t *testing.T) {
+	games := ParseGames(strings.NewReader(testInput))
+
+	result := games.SumOfFewestCubesPowered()
+
+	if result != 2286 {
+		t.Errorf("SumOfFewestCubesPowered() expected sum 2286, got %+d", result)
 	}
 }

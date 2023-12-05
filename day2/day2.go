@@ -15,6 +15,11 @@ type CubeSet struct {
 	Blue  int
 }
 
+// Power of a set of cubes is equal to the numbers of red, green, and blue cubes multiplied together.
+func (c CubeSet) Power() int {
+	return c.Red * c.Green * c.Blue
+}
+
 // ParseCubeSet expects a CSV of format "3 Blue, 4 Red, 2 Green"
 // input may not have all colors, may have multiple numbers
 // TODO: We might be able to parse the whole thing in a single regex instead of split and multiple iterations
@@ -87,6 +92,17 @@ func (g Game) IsPossible(maxes CubeSet) bool {
 	return true
 }
 
+func (g Game) FewestPossible() CubeSet {
+	result := CubeSet{}
+	for _, round := range g.rounds {
+		// new golang max builtin, woo
+		result.Red = max(result.Red, round.Red)
+		result.Green = max(result.Green, round.Green)
+		result.Blue = max(result.Blue, round.Blue)
+	}
+	return result
+}
+
 type Games struct {
 	games []Game
 }
@@ -120,6 +136,15 @@ func (g Games) SumOfPossibleIds(maxes CubeSet) int {
 	result := 0
 	for _, possibleId := range g.PossibleIds(maxes) {
 		result += possibleId
+	}
+	return result
+}
+
+func (g Games) SumOfFewestCubesPowered() int {
+	result := 0
+	for _, game := range g.games {
+		fewestCubes := game.FewestPossible()
+		result += fewestCubes.Power()
 	}
 	return result
 }

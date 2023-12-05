@@ -69,4 +69,10 @@ func runDay2(filename string, args []string) {
 		result := games.SumOfPossibleIds(day2.CubeSet{Red: 12, Green: 13, Blue: 14})
 		fmt.Printf("Result day 2 part 1 with input file %s: %d\n", filename, result)
 	})
+
+	withFile(filename, func(r io.Reader) {
+		games := day2.ParseGames(r)
+		result := games.SumOfFewestCubesPowered()
+		fmt.Printf("Result day 2 part 2 with input file %s: %d\n", filename, result)
+	})
 }
