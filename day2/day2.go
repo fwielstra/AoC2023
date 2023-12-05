@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"strconv"
 	"strings"
 
 	"github.com/fwielstra/AoC2023/utils"
@@ -38,11 +37,7 @@ func ParseCubeSet(input string) CubeSet {
 
 	for _, p := range parts {
 		components := strings.Fields(p)
-		number, err := strconv.Atoi(components[0])
-
-		if err != nil {
-			panic(err)
-		}
+		number := utils.ParseInt(components[0])
 
 		// can remove the switch if we use a map instead but eh.
 		switch components[1] {
@@ -67,7 +62,7 @@ func ParseGame(input string) Game {
 	// get game ID
 	// Game 1: 3 Blue, 4 Red; 1 Red, 2 Green, 6 Blue; 2 Green
 	fragments := utils.TrimmedFields(input, ':')
-	id, _ := strconv.Atoi(strings.Fields(fragments[0])[1])
+	id := utils.ParseInt(strings.Fields(fragments[0])[1])
 	roundStrings := utils.TrimmedFields(fragments[1], ';')
 	rounds := make([]CubeSet, len(roundStrings))
 	for i, r := range roundStrings {

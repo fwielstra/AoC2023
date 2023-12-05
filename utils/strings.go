@@ -1,6 +1,9 @@
 package utils
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 func SplitAndTrim(s string, sep string) []string {
 	result := strings.Split(s, sep)
@@ -16,6 +19,15 @@ func TrimmedFields(s string, sep rune) []string {
 	})
 	for i := range result {
 		result[i] = strings.TrimSpace(result[i])
+	}
+	return result
+}
+
+// ParseInt parses integers, panics if there's an error
+func ParseInt(s string) int {
+	result, err := strconv.Atoi(s)
+	if err != nil {
+		panic(err)
 	}
 	return result
 }

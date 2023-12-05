@@ -2,8 +2,8 @@ package day1
 
 import (
 	"bufio"
+	"github.com/fwielstra/AoC2023/utils"
 	"io"
-	"strconv"
 	"strings"
 )
 
@@ -22,7 +22,7 @@ func GetCalibrationValue(input io.Reader) int {
 
 		// concat result
 		number := string(next[first]) + string(next[last])
-		nr, _ := strconv.Atoi(number)
+		nr := utils.ParseInt(number)
 
 		result += nr
 	}
