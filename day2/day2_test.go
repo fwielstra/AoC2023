@@ -55,28 +55,16 @@ func TestCubeSet_Power(t *testing.T) {
 	}{
 		{
 			// this is the minimum amount of cubes for game 1
-			cubeSet: CubeSet{
-				Red:   4,
-				Green: 2,
-				Blue:  6,
-			},
-			want: 48,
+			cubeSet: CubeSet{Red: 4, Green: 2, Blue: 6},
+			want:    48,
 		},
 		{
-			cubeSet: CubeSet{
-				Red:   1,
-				Green: 4,
-				Blue:  3,
-			},
-			want: 12,
+			cubeSet: CubeSet{Red: 1, Green: 4, Blue: 3},
+			want:    12,
 		},
 		{
-			cubeSet: CubeSet{
-				Red:   20,
-				Green: 13,
-				Blue:  6,
-			},
-			want: 1560,
+			cubeSet: CubeSet{Red: 20, Green: 13, Blue: 6},
+			want:    1560,
 		},
 	}
 	for _, tt := range tests {
