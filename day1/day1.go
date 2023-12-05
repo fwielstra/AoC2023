@@ -15,7 +15,7 @@ func GetCalibrationValue(input io.Reader) int {
 
 	result := 0
 	for scanner.Scan() {
-		next := strings.TrimSpace(scanner.Text())
+		next := scanner.Text()
 		// find first and last number
 		first := strings.IndexAny(next, digits)
 		last := strings.LastIndexAny(next, digits)
@@ -49,7 +49,7 @@ func GetCalibrationValueWords(input io.Reader) int {
 
 	result := ""
 	for scanner.Scan() {
-		next := strings.TrimSpace(scanner.Text())
+		next := scanner.Text()
 
 		// ugh
 		line := ""

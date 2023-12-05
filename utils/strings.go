@@ -9,3 +9,13 @@ func SplitAndTrim(s string, sep string) []string {
 	}
 	return result
 }
+
+func TrimmedFields(s string, sep rune) []string {
+	result := strings.FieldsFunc(s, func(r rune) bool {
+		return r == sep
+	})
+	for i := range result {
+		result[i] = strings.TrimSpace(result[i])
+	}
+	return result
+}

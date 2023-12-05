@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"strconv"
+	"strings"
 
 	"github.com/fwielstra/AoC2023/utils"
 )
@@ -33,10 +34,10 @@ func ParseCubeSet(input string) CubeSet {
 	}
 
 	// split and trim
-	parts := utils.SplitAndTrim(input, ",")
+	parts := utils.TrimmedFields(input, ',')
 
 	for _, p := range parts {
-		components := utils.SplitAndTrim(p, " ")
+		components := strings.Fields(p)
 		number, err := strconv.Atoi(components[0])
 
 		if err != nil {
@@ -65,9 +66,9 @@ type Game struct {
 func ParseGame(input string) Game {
 	// get game ID
 	// Game 1: 3 Blue, 4 Red; 1 Red, 2 Green, 6 Blue; 2 Green
-	fragments := utils.SplitAndTrim(input, ": ")
-	id, _ := strconv.Atoi(utils.SplitAndTrim(fragments[0], " ")[1])
-	roundStrings := utils.SplitAndTrim(fragments[1], ";")
+	fragments := utils.TrimmedFields(input, ':')
+	id, _ := strconv.Atoi(strings.Fields(fragments[0])[1])
+	roundStrings := utils.TrimmedFields(fragments[1], ';')
 	rounds := make([]CubeSet, len(roundStrings))
 	for i, r := range roundStrings {
 		rounds[i] = ParseCubeSet(r)
@@ -79,8 +80,7 @@ func ParseGame(input string) Game {
 	}
 }
 
-// A set of games is only possible if the number of cubes in any round
-// exceeds the given max
+// IsPossible returns true if the number of cubes in any round does not exceed the values in the given cube set
 func (g Game) IsPossible(maxes CubeSet) bool {
 	for _, r := range g.rounds {
 		isPossible := r.Red <= maxes.Red && r.Green <= maxes.Green && r.Blue <= maxes.Blue
