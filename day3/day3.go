@@ -34,11 +34,11 @@ func FindPartNumbers(schematic string) PartNumbers {
 	result := make(PartNumbers, 0)
 	grid := utils.NewGrid(schematic)
 
-	grid.Iterate(func(y, x int, value rune) bool {
+	grid.Iterate(func(pos utils.Coordinate, value rune) bool {
 		if unicode.IsDigit(value) {
 			currentNumber += string(value)
 
-			grid.IterateNeighbours(y, x, func(neighbour rune) bool {
+			grid.IterateNeighbours(pos, func(_ utils.Coordinate, neighbour rune) bool {
 				if !unicode.IsDigit(neighbour) && neighbour != '.' {
 					isPart = true
 					return true
