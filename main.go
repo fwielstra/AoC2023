@@ -87,8 +87,7 @@ func runDay3(filename string, args []string) {
 	})
 
 	withFile(filename, func(r io.Reader) {
-		//games := day2.ParseGames(r)
-		//result := games.SumOfFewestCubesPowered()
-		//fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, result)
+		sum := day3.GetGearRatioSum(r)
+		fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, sum)
 	})
 }
