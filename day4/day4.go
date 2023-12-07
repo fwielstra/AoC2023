@@ -11,6 +11,8 @@ type Card struct {
 	idx            int
 	WinningNumbers []int
 	OwnedNumbers   []int
+	// remember the number of matches for multiple calls
+	matches int
 }
 
 func ParseCard(input string) Card {
@@ -19,11 +21,16 @@ func ParseCard(input string) Card {
 	winning, owned, _ := strings.Cut(values, "|")
 
 	// idx is the card's position in the original array, so we can index on idx + score for day 2.
-	return Card{
+	result := Card{
 		idx:            utils.ParseInt(id) - 1,
 		WinningNumbers: utils.TrimmedIntFields(winning),
 		OwnedNumbers:   utils.TrimmedIntFields(owned),
 	}
+
+	// Precalculate the number of matches
+	result.matches = result.calculateMatches()
+
+	return result
 }
 
 func ParseCards(r io.Reader) []Card {
@@ -37,16 +44,19 @@ func ParseCards(r io.Reader) []Card {
 	return cards
 }
 
-// Matches returns the number of matches / winning numbers
-func (c Card) Matches() int {
+func (c Card) calculateMatches() int {
 	matches := 0
 	for _, ownedNumber := range c.OwnedNumbers {
 		if utils.Contains(c.WinningNumbers, ownedNumber) {
 			matches++
 		}
 	}
-
 	return matches
+}
+
+// Matches returns the number of matches / winning numbers
+func (c Card) Matches() int {
+	return c.matches
 }
 
 // Score is calculated as: "The first match makes the card worth one point and
