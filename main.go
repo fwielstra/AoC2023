@@ -102,7 +102,7 @@ func runDay4(filename string, args []string) {
 	})
 
 	withFile(filename, func(r io.Reader) {
-		//sum := day3.GetGearRatioSum(r)
-		//fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, sum)
+		result := day4.CountWonScratchCards(r)
+		fmt.Printf("Result day 4 part 1 with input file %s: %d\n", filename, result)
 	})
 }

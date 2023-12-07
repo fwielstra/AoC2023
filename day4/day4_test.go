@@ -41,6 +41,13 @@ func Test_Score(t *testing.T) {
 func Test_TotalScore(t *testing.T) {
 	result := TotalCardScore(strings.NewReader(input))
 	if result != 13 {
-		t.Errorf("Expected total score of 13, got %d", result)
+		t.Errorf("TotalCardScore(): Expected total score of 13, got %d", result)
+	}
+}
+
+func Test_CountWonScratchCards(t *testing.T) {
+	result := CountWonScratchCards(strings.NewReader(input))
+	if result != 30 {
+		t.Errorf("CountWonScratchCards(): Expected total score of 13, got %d", result)
 	}
 }

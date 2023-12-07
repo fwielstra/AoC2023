@@ -35,7 +35,7 @@ func TrimmedIntFields(s string) []int {
 
 // ParseInt parses integers, panics if there's an error
 func ParseInt(s string) int {
-	result, err := strconv.Atoi(s)
+	result, err := strconv.Atoi(strings.TrimSpace(s))
 	if err != nil {
 		panic(err)
 	}

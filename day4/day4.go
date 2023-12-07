@@ -8,18 +8,19 @@ import (
 )
 
 type Card struct {
+	idx            int
 	WinningNumbers []int
 	OwnedNumbers   []int
 }
 
-type Cards []Card
-
 func ParseCard(input string) Card {
-	// discard Card x: prefix using indexing / slicing
-	values := input[strings.Index(input, ":")+1:]
+	prefix, values, _ := strings.Cut(input, ":")
+	_, id, _ := strings.Cut(prefix, " ")
 	winning, owned, _ := strings.Cut(values, "|")
 
+	// idx is the card's position in the original array, so we can index on idx + score for day 2.
 	return Card{
+		idx:            utils.ParseInt(id) - 1,
 		WinningNumbers: utils.TrimmedIntFields(winning),
 		OwnedNumbers:   utils.TrimmedIntFields(owned),
 	}
@@ -36,17 +37,23 @@ func ParseCards(r io.Reader) []Card {
 	return cards
 }
 
+// Matches returns the number of matches / winning numbers
+func (c Card) Matches() int {
+	matches := 0
+	for _, ownedNumber := range c.OwnedNumbers {
+		if utils.Contains(c.WinningNumbers, ownedNumber) {
+			matches++
+		}
+	}
+
+	return matches
+}
+
 // Score is calculated as: "The first match makes the card worth one point and
 // each match after the first doubles the point value of that card."
 // 0 winning number = score 0, 1 winning number = score 1, 2 numbers = 2, 3 numbers = 4, etc.
 func (c Card) Score() int {
-	winningNumbers := 0
-	for _, ownedNumber := range c.OwnedNumbers {
-		if utils.Contains(c.WinningNumbers, ownedNumber) {
-			winningNumbers++
-		}
-	}
-
+	winningNumbers := c.Matches()
 	if winningNumbers == 0 {
 		return 0
 	}
@@ -62,4 +69,31 @@ func TotalCardScore(r io.Reader) int {
 		totalScore += card.Score()
 	}
 	return totalScore
+}
+
+type Cards []Card
+
+func CountWonScratchCards(r io.Reader) int {
+	cards := ParseCards(r)
+	wonCards := len(cards)
+
+	// Add all cards and all won cards to a queue of cards yet to be checked
+	cardQueue := make([]Card, len(cards))
+	copy(cardQueue, cards)
+
+	for len(cardQueue) != 0 {
+		// pop from queue; if cardQueue was in the same scope we could do it in one line.
+		current := cardQueue[0]
+		cardQueue = cardQueue[1:]
+		score := current.Matches()
+		if score > 0 {
+			startIdx := current.idx + 1
+			endIdx := startIdx + score
+			toAppend := cards[startIdx:endIdx]
+			wonCards += len(toAppend)
+			cardQueue = append(cardQueue, toAppend...)
+		}
+	}
+
+	return wonCards
 }
