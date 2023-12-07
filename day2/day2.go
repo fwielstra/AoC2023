@@ -9,6 +9,12 @@ import (
 	"github.com/fwielstra/AoC2023/utils"
 )
 
+// TODO: look at https://medium.com/@ozoniuss/optimizing-go-string-operations-with-practical-examples-83df39b776fb for optimizations;
+// examples:
+//  - use strings.Index and split the string using subslices, saving allocations because it doesn't create new arrays (which strings.Split does)
+//  - same with getting indivdual games, cutting bits off the remaining stringNa
+//  - use strings.Cut to split a string in two parts, basically a utility for the above
+
 type CubeSet struct {
 	Red   int
 	Green int

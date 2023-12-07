@@ -17,12 +17,6 @@ func main() {
 	filename := os.Args[2]
 	args := os.Args[3:]
 
-	file, err := os.Open(filename)
-	if err != nil {
-		fmt.Printf("error opening file %s: %s\n", filename, err)
-		os.Exit(1)
-	}
-
 	switch day {
 	case "day1":
 		runDay1(filename, args)
@@ -35,8 +29,6 @@ func main() {
 	default:
 		fmt.Printf("unrecognized day %s\n", day)
 	}
-
-	file.Close()
 }
 
 func withFile(filename string, callback func(r io.Reader)) {

@@ -61,6 +61,7 @@ func FindPartNumbers(schematic string) PartNumbers {
 }
 
 func GetPartNumberSum(r io.Reader) int {
+	// TODO: extract io.Reader to string to utility.
 	buf := new(strings.Builder)
 	_, err := io.Copy(buf, r)
 	if err != nil {
