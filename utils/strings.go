@@ -23,6 +23,16 @@ func TrimmedFields(s string, sep rune) []string {
 	return result
 }
 
+// TrimmedIntFields splits on space, trims, and parses result as number
+func TrimmedIntFields(s string) []int {
+	fields := strings.Fields(s)
+	result := make([]int, len(fields))
+	for i, value := range fields {
+		result[i] = ParseInt(strings.TrimSpace(value))
+	}
+	return result
+}
+
 // ParseInt parses integers, panics if there's an error
 func ParseInt(s string) int {
 	result, err := strconv.Atoi(s)

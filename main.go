@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/fwielstra/AoC2023/day3"
+	"github.com/fwielstra/AoC2023/day4"
 	"io"
 	"os"
 	"time"
@@ -29,6 +30,8 @@ func main() {
 		runDay2(filename, args)
 	case "day3":
 		runDay3(filename, args)
+	case "day4":
+		runDay4(filename, args)
 	default:
 		fmt.Printf("unrecognized day %s\n", day)
 	}
@@ -89,5 +92,17 @@ func runDay3(filename string, args []string) {
 	withFile(filename, func(r io.Reader) {
 		sum := day3.GetGearRatioSum(r)
 		fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, sum)
+	})
+}
+
+func runDay4(filename string, args []string) {
+	withFile(filename, func(r io.Reader) {
+		score := day4.TotalCardScore(r)
+		fmt.Printf("Result day 4 part 1 with input file %s: %d\n", filename, score)
+	})
+
+	withFile(filename, func(r io.Reader) {
+		//sum := day3.GetGearRatioSum(r)
+		//fmt.Printf("Result day 3 part 2 with input file %s: %d\n", filename, sum)
 	})
 }
